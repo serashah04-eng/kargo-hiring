@@ -1,0 +1,100 @@
+KARGO HIRING RUBRIC: PRODUCT MANAGER & SENIOR PRODUCT MANAGER
+Built from 8 past-hire CVs and the two Kargo JDs (PM, SPM)
+
+IMPORTANT LIMITATION (Step 1)
+The uploaded files contain no performance ratings, outcomes, or interview notes.
+The .docx files were checked, including comments, metadata, and footnotes, and none
+are present. As agreed, the hires were NOT sorted into High / Meets / Below tiers.
+The patterns below are behaviours that recur across MULTIPLE past-hire CVs, backed by
+concrete, verifiable claims in those CVs. They are NOT confirmed to predict high
+performance at Kargo. Once ratings are available, re-check each pattern: keep it only
+if it shows up more in high-rated hires than in lower-rated ones.
+
+Past hires reviewed: Rohan Desai (engineering, ex-CHA ops), Sunita Krishnamurthy (ops /
+compliance consultant), Vikram Nair (PM, HR tech), Aditya Shetty (enterprise sales,
+logistics SaaS), Preetham Rao (backend engineering, e-comm), Meghna Tiwari (customer
+success, ex-freight), Lavanya Iyer (PM, port/logistics SaaS), Rahul Bose (B2B marketing).
+
+Patterns found but DROPPED because the JDs already cover them:
+- Building team standards and processes that others adopt (Vikram, Meghna, Sunita,
+  Rohan). PM JD: "The rhythms a PM function needs." SPM JD: "Helping define the
+  practices... the PM function will run on."
+- Ground-level operations experience (Rohan, Sunita, Meghna, Lavanya, Aditya). PM JD:
+  "Genuine curiosity about how operations work at ground level." SPM JD: familiarity
+  "is a genuine advantage."
+- Learning from killed or failed work (Lavanya, Aditya). PM JD: "shipped things, killed
+  things, and learned from both."
+These still appear in the rubrics where the evidence supports them, but they are not
+counted as hidden patterns.
+
+
+## 1. Hidden Success Patterns
+
+| Pattern | Evidence from Past-Hire CVs (untiered, see limitation) | Present in JD? |
+| ------- | ------------------------------------------------------ | -------------- |
+| P1. Unprompted build → peer adoption. They spot a pain nobody assigned to them, build a working fix on their own initiative, and colleagues adopt it without being told to. | Rohan: built a B/L verification prototype over a weekend, and 30 colleagues were using it within a month; it is now a core feature. Earlier he built an Excel tracker that the 12-person ops team adopted in 2 weeks. Lavanya: built a visibility dashboard, first in Excel and then in Tableau, that 2 other regional teams adopted. Preetham: built an unrequested exception-rate dashboard that exposed a bug losing ₹12L/month. Sunita: rebuilt the intake workflow over a weekend, and the team kept it permanently. | PM: Partially. The JD asks for features "customers use without being asked to," but that is about adoption of assigned roadmap work. It says nothing about initiating without a mandate, or about peer adoption as proof of judgment. SPM: No. |
+| P2. Silent recovery. When something breaks under time pressure, they fix it before the customer feels it. | Meghna: resolved a 7pm customs hold overnight "before the client became aware," and says "the customer should not be the one managing your mistakes." Sunita: the FMS vendor changed its data format without notice, and she redesigned the workflow over a weekend with no disruption. Rohan: led a vendor migration under time pressure with no data loss, and fixed a peak-hour PostgreSQL timeout the same day. Preetham: patched a revenue-leaking bug within 48 hours, and his P1 incidents resolve in 22 minutes on average. Aditya: won 3 competitor accounts during a port-congestion incident that the competitor handled poorly. | PM: No. SPM: Partially. The JD asks for "reliability and data quality standards," which is about a system. It does not ask about a person's own behaviour in the moment of failure, or about shielding the customer. |
+| P3. Growing others to promotion. People they mentored get promoted, which is a measurable outcome. | Rohan: one of his mentees was promoted to mid-level within 14 months. Sunita: trained two juniors, and one was promoted to team lead within 18 months. Preetham: mentored 2 juniors through fortnightly 1:1s and code reviews. Rahul: hired and onboarded a 4-person team from scratch. | PM: No. SPM: No. The SPM JD mentions a possible Head of Product path and "standards for PM work," but never mentions developing people. |
+
+
+## 2. Product Manager Rubric
+
+Scoring: rate each criterion 1–5, where 1 = no evidence, 3 = some relevant evidence, and
+5 = strong evidence matching the right-hand column. Weighted score = sum of
+(rating ÷ 5 × weight). Probe each criterion with a "tell me about a specific time"
+question, and score only concrete, checkable examples.
+
+| Criterion | Definition (incl. why it matters at Kargo) | Evidence | What Strong Looks Like | Weight |
+| --------- | ------------------------------------------ | -------- | ---------------------- | ------ |
+| 1. Unprompted build → peer adoption (P1) | Spots an unowned operational pain, builds a rough working fix without being asked, and gets it adopted. WHY: Kargo has no PM function, handbook or template, so nobody will hand this person problems. It also directly tests the JD's 6-month goal of features customers use "without being asked to." | Rohan (B/L prototype → 30 users in 1 month; Excel tracker → 12 users in 2 weeks), Lavanya (dashboard adopted by 2 other teams), Preetham (unrequested dashboard found a ₹12L/month bug), Sunita (weekend workflow rebuild kept permanently) | Names a specific pain they noticed themselves, what they built and how fast, and who adopted it without a mandate, with numbers. Weak: every example was an assigned project. | 25% |
+| 2. Lived operations fluency | Has personally done or sat inside freight, customs, carrier or port work, not just interviewed people who do. WHY: the PM owns the tool ops teams "live inside," and the JD's 6-month goal is time "in the rooms where the work actually happens." | Rohan (180+ shipments/month of documentation at a CHA), Sunita (200+ shipments/month, DGFT and customs work), Meghna (overnight customs-hold resolution), Lavanya (carrier allocation, 800+ shipments/month), Aditya (worked alongside terminal ops during peak periods) | Can walk through a real freight forwarder's day: documents, holds, DO releases, berth windows, and what breaks. Can name a workflow gap they saw from inside the operation. | 20% |
+| 3. Ship–kill–document discipline | Kills work based on usage data, even when discovery was positive, and writes up why things failed so the lesson spreads. WHY: the JD asks for short cycles of shipping and killing. The evidence adds that the strongest examples produced a written artifact that others reused. | Lavanya (killed 2 features despite strong qualitative demand, moved capacity to a workflow with 3x weekly active use, wrote internal and customer-facing outage post-mortems); Aditya (post-mortem on a lost deal became standard qualification practice) | Gives a real kill decision with the data behind it and what replaced it, and has a written post-mortem that changed how the team works. Weak: only success stories, or "we learned a lot" with no artifact. | 20% |
+| 4. Silent recovery under pressure (P2) | When something breaks, fixes it fast and keeps the customer from absorbing the pain. WHY: customers run daily operations on Kargo, and the first PM will often be the person closest to a live failure. | Meghna (overnight customs hold resolved before the client knew), Sunita (weekend workflow rebuild after an unannounced vendor change), Rohan (same-day fix for a peak-hour outage) | A concrete incident with timeline, what they personally did, and customer impact (ideally none). Weak: escalated and waited, or the story is only about the team. | 20% |
+| 5. Builds rhythms others adopt | Creates templates, frameworks or processes that become the team standard. WHY: the JD makes this core to the first PM role. The evidence shows the key signal is adoption by others, not just creation. | Vikram (PRD template and sprint review adopted by the 4-PM team), Meghna (30-60-90 framework adopted by the full CS team), Sunita (SOPs adopted in full within 60 days) | Shows the artifact, who adopted it, and what measurably changed, for example less misalignment or fewer queries. | 15% |
+
+**Total Weight: 100%** (25 + 20 + 20 + 20 + 15)
+
+
+## 3. Senior Product Manager Rubric
+
+Scoring: same 1–5 method as the PM rubric. The SPM rubric gives more weight to
+integration and migration judgment, decision ownership, and growing people, because the
+SPM JD centres on the integration and data layer, consequential calls, and a possible
+Head of Product path.
+
+| Criterion | Definition (incl. why it matters at Kargo) | Evidence | What Strong Looks Like | Weight |
+| --------- | ------------------------------------------ | -------- | ---------------------- | ------ |
+| 1. Integration & migration judgment under live stakes | Has moved or connected live operational systems (vendors, carriers, 3PLs, FMS) without disrupting users, and made the build / configure / avoid call. WHY: the SPM owns carrier, port and ERP integrations, with consequences "two years from now." | Rohan (led a data-vendor migration with no data loss and 60% less lag), Preetham (3PL integrations with Delhivery, Bluedart and Ecom Express; batch-to-event migration cutting lag from 4 hours to 8 minutes; zero-downtime index change), Sunita (scoped and ran a paper-to-cloud FMS migration, including vendor management and go-live), Lavanya (API docs cut integration time by 2 weeks) | A named migration or integration with its trade-offs, the rollback or safety plan, measured result, and one thing they deliberately chose not to build. | 25% |
+| 2. Silent recovery & reliability instinct (P2) | Treats failures as their own responsibility, fixes fast, and shields customers. WHY: the JD asks for data quality freight forwarders "can stake their operations on." The evidence shows personal behaviour in incidents, not just standards on paper. | Rohan (40% fewer P1 incidents after introducing on-call and code review), Preetham (22-minute average P1 resolution; ₹12L/month bug fixed in 48 hours), Meghna (overnight customs fix), Sunita (no disruption despite an unannounced vendor change) | A specific incident plus a structural fix that stopped it happening again, such as on-call, monitoring or review. | 20% |
+| 3. Documented decision ownership | Makes calls in ambiguity, commits, and writes down the reasoning, including when they were wrong. WHY: "no committee approves product decisions," and the roadmap must not change "three times in six weeks." | Lavanya (kill decisions based on usage data; engineering lead said she "doesn't hedge"; owned outage follow-ups to closure), Aditya (written root cause on a lost deal adopted as standard) | A hard call made without senior cover, its written rationale, what happened, and what they would change. Referees confirm the team trusted the call. | 20% |
+| 4. Grows people to promotion (P3) | Develops others with measurable outcomes. WHY: the SPM is the most senior PM and a possible Head of Product. Neither JD tests this, but 4 past hires show it. | Rohan (mentee promoted within 14 months), Sunita (trainee promoted to team lead within 18 months), Preetham (2 mentees, structured 1:1s), Rahul (hired and onboarded a 4-person team) | Names the people they developed, what they did differently for each, and the outcome, such as a promotion or a new scope. Weak: "I mentor informally." | 15% |
+| 5. Lived operations fluency | Has direct, hands-on experience in logistics or operations-heavy work. WHY: the JD calls this "a genuine advantage, not a nice-to-have." Integration choices depend on how forwarders actually work. | Rohan, Sunita, Meghna, Lavanya, Aditya (see PM criterion 2) | Can explain how a real integration gap, such as a slot booking or document handoff, breaks a forwarder's workflow. | 10% |
+| 6. Commercial read of product gaps | Understands why deals stall, such as the buyer, the procurement cycle, or a missing integration, and connects product work to revenue. WHY: the 6-month goal is an integration that "unblocked a stalled deal." | Aditya (lost-deal root cause: misread the IT procurement cycle and the wrong economic buyer; case study programme), Lavanya (API docs shortened customer integration), Rahul (case studies became the most-used sales collateral) | Names a specific deal or segment a product or integration change unlocked, and how they found the blocker. | 10% |
+
+**Total Weight: 100%** (25 + 20 + 20 + 15 + 10 + 10)
+
+
+## 4. Final Validation
+
+- Number of PM criteria: 5 (within 4–6) ✔
+- PM weight total: 25 + 20 + 20 + 20 + 15 = 100% ✔
+- Number of SPM criteria: 6 (within 4–6) ✔
+- SPM weight total: 25 + 20 + 20 + 15 + 10 + 10 = 100% ✔
+- Hidden patterns identified: 3 (P1 Unprompted build → peer adoption, P2 Silent
+  recovery, P3 Growing others to promotion). None is explicit in the relevant JD; where a
+  JD touches on one, the gap is explained in Section 1. ✔
+- Every criterion cites at least one past-hire CV with specific, verifiable claims. ✔
+- Evidence source for each criterion:
+    PM1: Rohan, Lavanya, Preetham, Sunita | PM2: Rohan, Sunita, Meghna, Lavanya, Aditya
+    PM3: Lavanya, Aditya | PM4: Meghna, Sunita, Rohan | PM5: Vikram, Meghna, Sunita
+    SPM1: Rohan, Preetham, Sunita, Lavanya | SPM2: Rohan, Preetham, Meghna, Sunita
+    SPM3: Lavanya, Aditya | SPM4: Rohan, Sunita, Preetham, Rahul
+    SPM5: Rohan, Sunita, Meghna, Lavanya, Aditya | SPM6: Aditya, Lavanya, Rahul
+- Patterns from high-rated hires: CANNOT BE CONFIRMED. No ratings were provided, so the
+  patterns come from recurrence across CVs, not from comparing high- and low-rated hires.
+  This is the main open risk. ✘ (pending data)
+- No unsupported assumptions: no ratings or interview findings were invented. Weights
+  reflect how often and how strongly each pattern appears in the CVs, plus the JD
+  emphasis for each role. They should be re-weighted once outcome data exists. ✔
+- Usable on a new candidate: each criterion has a 1–5 scale, a strong/weak anchor, and a
+  weighted total. ✔

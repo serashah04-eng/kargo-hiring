@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+:root {
+  --cream: #fffdf2;
+  --ink: #000000;
+}
+
+@theme inline {
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --font-sans: var(--font-grotesk);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-grotesk), system-ui, sans-serif;
+}
+
+@layer components {
+  .card {
+    @apply border-[3px] border-ink bg-cream shadow-[6px_6px_0_0_#000];
+  }
+  .card-flat {
+    @apply border-[3px] border-ink bg-cream;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 border-[3px] border-ink bg-cream px-4 py-2 text-sm font-bold uppercase tracking-wide shadow-[4px_4px_0_0_#000] transition-[transform,box-shadow] duration-75 select-none cursor-pointer;
+  }
+  .btn:hover:not(:disabled) {
+    @apply -translate-x-px -translate-y-px shadow-[5px_5px_0_0_#000];
+  }
+  .btn:active:not(:disabled) {
+    @apply translate-x-[4px] translate-y-[4px] shadow-none;
+  }
+  .btn:disabled {
+    @apply opacity-40 cursor-not-allowed;
+  }
+  .btn-dark {
+    @apply bg-ink text-cream;
+  }
+  .input {
+    @apply w-full border-[3px] border-ink bg-cream px-3 py-2 font-medium outline-none focus:shadow-[4px_4px_0_0_#000];
+  }
+  .label {
+    @apply block text-xs font-black uppercase tracking-widest mb-1;
+  }
+  .tag {
+    @apply inline-block border-2 border-ink px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide whitespace-nowrap;
+  }
+  .tag-dark {
+    @apply bg-ink text-cream;
+  }
+  .h-section {
+    @apply text-xs font-black uppercase tracking-[0.2em] border-b-[3px] border-ink pb-2 mb-4;
+  }
+}
+
+.stripes {
+  background-image: repeating-linear-gradient(45deg, #000 0 2px, transparent 2px 8px);
+}
