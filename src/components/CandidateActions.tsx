@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Check, ChevronDown, Pencil, RotateCcw, Send, Sparkles, X } from "lucide-react";
 import type { EmailRecord, Status } from "@/lib/types";
 import { ErrorBox, Spinner, StatusTag } from "./ui";
 
@@ -52,88 +53,111 @@ export default function CandidateActions({ candidate: c, hasEvaluation, emails }
   const locked = c.status === "interview_invited" || c.status === "rejection_sent";
 
   return (
-    <div className="space-y-8">
-      <section className="card p-4">
-        <h2 className="h-section">Your decision</h2>
-        <div className="mb-3 flex items-center gap-2 text-sm font-bold">
-          Status: <StatusTag status={c.status} />
+    <div className="space-y-6">
+      <section className="card p-5">
+        <h2 className="text-[22px] leading-tight tracking-tight">
+          Your decision,
+          <br />
+          <span className="text-muted">the AI only recommends.</span>
+        </h2>
+        <div className="mt-4 flex items-center gap-2 text-sm">
+          <span className="text-muted">Status</span> <StatusTag status={c.status} />
         </div>
-        <p className="mb-4 text-xs">The score is a recommendation. Nothing happens to this candidate until you act.</p>
 
         {!locked && (
-          <div className="grid gap-3">
+          <div className="mt-4 grid gap-2">
             {c.status !== "shortlisted" && (
-              <button className="btn btn-dark" disabled={!hasEvaluation || !!busy} onClick={() => decide("shortlist")}>
-                {busy === "shortlist" ? <Spinner /> : "✓"} Shortlist for interview
+              <button className="btn btn-dark h-11" disabled={!hasEvaluation || !!busy} onClick={() => decide("shortlist")}>
+                {busy === "shortlist" ? <Spinner /> : <Check size={16} />} Shortlist for interview
               </button>
             )}
             {c.status !== "declined" && (
-              <button className="btn" disabled={!hasEvaluation || !!busy} onClick={() => decide("decline")}>
-                {busy === "decline" ? <Spinner /> : "✕"} Not moving forward
+              <button className="btn h-11" disabled={!hasEvaluation || !!busy} onClick={() => decide("decline")}>
+                {busy === "decline" ? <Spinner /> : <X size={16} />} Not moving forward
               </button>
             )}
             {(c.status === "shortlisted" || c.status === "declined") && (
-              <button className="btn" disabled={!!busy} onClick={() => decide("reopen")}>
-                ↺ Undo decision
+              <button className="btn btn-ghost h-10 text-muted" disabled={!!busy} onClick={() => decide("reopen")}>
+                <RotateCcw size={15} /> Undo decision
               </button>
             )}
           </div>
         )}
-        {locked && <p className="text-sm font-bold">Email sent — decision recorded.</p>}
+        {locked && <p className="mt-4 rounded-2xl bg-surface-2 p-3 text-sm">Email sent — decision recorded.</p>}
 
         <button
-          className="mt-4 w-full text-left text-xs font-bold underline decoration-2 underline-offset-4 disabled:opacity-40"
+          className="mt-4 inline-flex items-center gap-1.5 text-xs text-muted underline-offset-4 hover:text-ink hover:underline disabled:opacity-40"
           disabled={!!busy}
           onClick={() => run("eval", () => post(`/api/candidates/${c.id}/evaluate`))}
         >
-          {busy === "eval" ? "Re-running evaluation…" : hasEvaluation ? "↻ Re-run AI evaluation" : "↻ Run AI evaluation"}
+          {busy === "eval" ? <Spinner /> : <RotateCcw size={13} />}
+          {busy === "eval" ? "Re-running evaluation…" : hasEvaluation ? "Re-run AI evaluation" : "Run AI evaluation"}
         </button>
         {error && <div className="mt-3"><ErrorBox>{error}</ErrorBox></div>}
-        {notice && <p className="mt-3 border-[3px] border-ink bg-ink p-2 text-sm font-bold text-cream">{notice}</p>}
+        {notice && (
+          <p className="mt-3 flex items-center gap-2 rounded-2xl bg-lime p-3 text-sm">
+            <Check size={16} /> {notice}
+          </p>
+        )}
       </section>
 
       {draftType && (
-        <section className="card p-4">
-          <h2 className="h-section">{draftType === "invite" ? "Interview invite" : "Courtesy email"}</h2>
-          {!draft ? (
-            <button
-              className="btn btn-dark w-full"
-              disabled={!!busy}
-              onClick={() => run("draft", () => post(`/api/candidates/${c.id}/draft`, { type: draftType }))}
-            >
-              {busy === "draft" ? <><Spinner /> Drafting…</> : `Draft ${draftType === "invite" ? "interview invite" : "courtesy email"}`}
-            </button>
-          ) : (
-            <Composer
-              key={draft.id}
-              draft={draft}
-              fallbackTo={c.email}
-              busy={busy}
-              onRegenerate={() => run("draft", () => post(`/api/candidates/${c.id}/draft`, { type: draftType }))}
-              onSend={(v) =>
-                run("send", async () => {
-                  const r = await post(`/api/emails/${draft.id}/send`, v);
-                  setNotice(r.simulated ? "Sent in DRY-RUN mode (no real email). Status updated." : `Email sent to ${v.to}. Status updated.`);
-                })
-              }
-            />
-          )}
+        <section className="card overflow-hidden">
+          <div className="iridescent grain relative px-5 py-4">
+            <div className="relative flex items-center justify-between">
+              <h2 className="text-[17px] font-medium tracking-tight">{draftType === "invite" ? "Interview invite" : "Courtesy email"}</h2>
+              <span className="chip bg-white/80">
+                <Sparkles size={11} /> AI draft
+              </span>
+            </div>
+          </div>
+          <div className="p-5">
+            {!draft ? (
+              <button
+                className="btn btn-dark h-11 w-full"
+                disabled={!!busy}
+                onClick={() => run("draft", () => post(`/api/candidates/${c.id}/draft`, { type: draftType }))}
+              >
+                {busy === "draft" ? <><Spinner /> Drafting…</> : <><Sparkles size={15} /> Draft {draftType === "invite" ? "interview invite" : "courtesy email"}</>}
+              </button>
+            ) : (
+              <Composer
+                key={draft.id}
+                draft={draft}
+                fallbackTo={c.email}
+                busy={busy}
+                onRegenerate={() => run("draft", () => post(`/api/candidates/${c.id}/draft`, { type: draftType }))}
+                onSend={(v) =>
+                  run("send", async () => {
+                    const r = await post(`/api/emails/${draft.id}/send`, v);
+                    setNotice(r.simulated ? "Sent in dry-run mode (no real email). Status updated." : `Email sent to ${v.to}. Status updated.`);
+                  })
+                }
+              />
+            )}
+          </div>
         </section>
       )}
 
       {sent.length > 0 && (
-        <section className="card-flat p-4">
-          <h2 className="h-section">Sent emails</h2>
-          <ul className="space-y-3">
+        <section className="card p-5">
+          <h2 className="h-section">
+            Sent emails <span className="count">{sent.length}</span>
+          </h2>
+          <ul className="space-y-2">
             {sent.map((e) => (
-              <li key={e.id} className="text-sm">
-                <details>
-                  <summary className="cursor-pointer font-bold">
-                    <span className="tag tag-dark mr-2">{e.type}</span>
-                    {e.subject}
+              <li key={e.id}>
+                <details className="group rounded-2xl bg-surface-2 p-3 text-sm">
+                  <summary className="flex cursor-pointer list-none items-center gap-2">
+                    <span className={`chip ${e.type === "invite" ? "bg-yellow" : "bg-pink"}`}>{e.type}</span>
+                    <span className="min-w-0 flex-1 truncate font-medium">{e.subject}</span>
+                    <ChevronDown size={15} className="shrink-0 text-muted transition group-open:rotate-180" />
                   </summary>
-                  <p className="mt-1 font-mono text-xs">To {e.to_email} · {e.sent_at && new Date(e.sent_at).toLocaleString("en-IN")}{e.provider_id?.startsWith("dry-run") ? " · DRY-RUN" : ""}</p>
-                  <pre className="mt-2 whitespace-pre-wrap border-2 border-ink p-2 font-sans text-xs">{e.body}</pre>
+                  <p className="mt-2 text-xs text-muted">
+                    To {e.to_email} · {e.sent_at && new Date(e.sent_at).toLocaleString("en-IN")}
+                    {e.provider_id?.startsWith("dry-run") ? " · dry-run" : ""}
+                  </p>
+                  <pre className="mt-2 whitespace-pre-wrap rounded-xl bg-surface p-3 font-sans text-xs leading-relaxed">{e.body}</pre>
                 </details>
               </li>
             ))}
@@ -165,7 +189,7 @@ function Composer({
 
   return (
     <div className="space-y-3">
-      <p className="text-xs">AI draft — review before sending. Nothing is sent until you click Send.</p>
+      <p className="text-xs text-muted">Review before sending. Nothing is sent until you click Send.</p>
       {draft.status === "failed" && <ErrorBox>Last send failed: {draft.error}</ErrorBox>}
       <label className="block">
         <span className="label">To</span>
@@ -176,36 +200,40 @@ function Composer({
         <input className="input" value={subject} readOnly={!editing} onChange={(e) => setSubject(e.target.value)} />
       </label>
       <label className="block">
-        <span className="label">Body</span>
+        <span className="label">Message</span>
         {editing ? (
-          <textarea className="input h-72 text-sm" value={body} onChange={(e) => setBody(e.target.value)} />
+          <textarea className="input h-72 leading-relaxed" value={body} onChange={(e) => setBody(e.target.value)} />
         ) : (
-          <pre className="max-h-72 overflow-auto whitespace-pre-wrap border-[3px] border-ink p-3 font-sans text-sm">{body}</pre>
+          <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded-xl bg-surface-2 p-3.5 font-sans text-sm leading-relaxed">{body}</pre>
         )}
       </label>
 
       {!confirm ? (
-        <div className="grid grid-cols-2 gap-3">
-          <button className="btn" disabled={!!busy} onClick={() => setEditing((v) => !v)}>
-            {editing ? "Done editing" : "Edit"}
+        <div className="grid grid-cols-2 gap-2">
+          <button className="btn h-11" disabled={!!busy} onClick={() => setEditing((v) => !v)}>
+            {editing ? <><Check size={15} /> Done</> : <><Pencil size={15} /> Edit</>}
           </button>
-          <button className="btn btn-dark" disabled={!!busy || !to.includes("@")} onClick={() => setConfirm(true)}>
-            Send
+          <button className="btn btn-dark h-11" disabled={!!busy || !to.includes("@")} onClick={() => setConfirm(true)}>
+            <Send size={15} /> Send
           </button>
         </div>
       ) : (
-        <div className="border-[3px] border-ink p-3">
-          <p className="mb-3 text-sm font-bold">Send this email to {to}?</p>
-          <div className="grid grid-cols-2 gap-3">
-            <button className="btn" disabled={busy === "send"} onClick={() => setConfirm(false)}>Cancel</button>
-            <button className="btn btn-dark" disabled={busy === "send"} onClick={() => onSend({ to, subject, body })}>
+        <div className="rounded-2xl bg-yellow/70 p-3">
+          <p className="mb-3 text-sm font-medium">Send this email to {to}?</p>
+          <div className="grid grid-cols-2 gap-2">
+            <button className="btn h-10" disabled={busy === "send"} onClick={() => setConfirm(false)}>Cancel</button>
+            <button className="btn btn-dark h-10" disabled={busy === "send"} onClick={() => onSend({ to, subject, body })}>
               {busy === "send" ? <><Spinner /> Sending</> : "Yes, send"}
             </button>
           </div>
         </div>
       )}
-      <button className="text-xs font-bold underline decoration-2 underline-offset-4 disabled:opacity-40" disabled={!!busy} onClick={onRegenerate}>
-        {busy === "draft" ? "Regenerating…" : "↻ Regenerate draft (discards edits)"}
+      <button
+        className="inline-flex items-center gap-1.5 text-xs text-muted underline-offset-4 hover:text-ink hover:underline disabled:opacity-40"
+        disabled={!!busy}
+        onClick={onRegenerate}
+      >
+        <RotateCcw size={13} /> {busy === "draft" ? "Regenerating…" : "Regenerate draft (discards edits)"}
       </button>
     </div>
   );

@@ -1,62 +1,120 @@
 @import "tailwindcss";
 
+/* Soft, iridescent system inspired by the Dafi case study */
 :root {
-  --cream: #fffdf2;
-  --ink: #000000;
+  --canvas: #f1ede8;
+  --surface: #ffffff;
+  --surface-2: #f7f4f0;
+  --ink: #141414;
+  --muted: #8b8680;
+  --line: #e8e3dd;
+
+  --yellow: #f7f0a4;
+  --pink: #f9d6d9;
+  --blue: #d4e8ef;
+  --lime: #e4eca0;
+  --peach: #fad2b6;
+  --lavender: #e4dcf6;
 }
 
 @theme inline {
-  --color-cream: var(--cream);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-ink: var(--ink);
-  --font-sans: var(--font-grotesk);
-  --font-mono: var(--font-mono);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-yellow: var(--yellow);
+  --color-pink: var(--pink);
+  --color-blue: var(--blue);
+  --color-lime: var(--lime);
+  --color-peach: var(--peach);
+  --color-lavender: var(--lavender);
+  --font-sans: var(--font-geist);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--cream);
+  background: var(--canvas);
   color: var(--ink);
-  font-family: var(--font-grotesk), system-ui, sans-serif;
+  font-family: var(--font-geist), system-ui, sans-serif;
 }
 
 @layer components {
   .card {
-    @apply border-[3px] border-ink bg-cream shadow-[6px_6px_0_0_#000];
+    @apply rounded-[22px] bg-surface shadow-[0_1px_2px_rgba(20,20,20,0.04),0_8px_24px_-12px_rgba(20,20,20,0.10)];
   }
-  .card-flat {
-    @apply border-[3px] border-ink bg-cream;
+  .card-soft {
+    @apply rounded-[22px] bg-surface-2;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 border-[3px] border-ink bg-cream px-4 py-2 text-sm font-bold uppercase tracking-wide shadow-[4px_4px_0_0_#000] transition-[transform,box-shadow] duration-75 select-none cursor-pointer;
-  }
-  .btn:hover:not(:disabled) {
-    @apply -translate-x-px -translate-y-px shadow-[5px_5px_0_0_#000];
-  }
-  .btn:active:not(:disabled) {
-    @apply translate-x-[4px] translate-y-[4px] shadow-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink/80 bg-surface px-4 py-2 text-sm font-medium transition-colors duration-150 select-none cursor-pointer hover:bg-surface-2;
   }
   .btn:disabled {
     @apply opacity-40 cursor-not-allowed;
   }
   .btn-dark {
-    @apply bg-ink text-cream;
+    @apply border-ink bg-ink text-white hover:bg-black;
+  }
+  .btn-ghost {
+    @apply border-transparent bg-transparent hover:bg-surface-2;
   }
   .input {
-    @apply w-full border-[3px] border-ink bg-cream px-3 py-2 font-medium outline-none focus:shadow-[4px_4px_0_0_#000];
+    @apply w-full rounded-xl border border-line bg-surface-2 px-3.5 py-2.5 text-sm outline-none transition focus:border-ink/40 focus:bg-surface;
   }
   .label {
-    @apply block text-xs font-black uppercase tracking-widest mb-1;
+    @apply mb-1.5 block text-xs font-medium text-muted;
   }
-  .tag {
-    @apply inline-block border-2 border-ink px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide whitespace-nowrap;
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide whitespace-nowrap;
   }
-  .tag-dark {
-    @apply bg-ink text-cream;
+  .count {
+    @apply inline-grid min-w-5 place-items-center rounded-md bg-yellow px-1.5 text-[11px] font-semibold;
   }
   .h-section {
-    @apply text-xs font-black uppercase tracking-[0.2em] border-b-[3px] border-ink pb-2 mb-4;
+    @apply mb-4 flex items-center gap-2 text-[17px] font-medium tracking-tight;
+  }
+  .seg {
+    @apply inline-flex rounded-xl bg-surface-2 p-1;
+  }
+  .seg > button {
+    @apply rounded-lg px-3.5 py-1.5 text-sm font-medium text-muted transition;
+  }
+  .seg > button[aria-pressed="true"] {
+    @apply bg-surface text-ink shadow-[0_1px_3px_rgba(0,0,0,0.08)];
   }
 }
 
-.stripes {
-  background-image: repeating-linear-gradient(45deg, #000 0 2px, transparent 2px 8px);
+/* Iridescent ambient gradient */
+.iridescent {
+  background:
+    radial-gradient(40% 55% at 22% 30%, #cfe3f5 0%, transparent 70%),
+    radial-gradient(35% 50% at 55% 20%, #f6d3e3 0%, transparent 70%),
+    radial-gradient(45% 60% at 70% 75%, #f8eb9a 0%, transparent 70%),
+    radial-gradient(35% 45% at 88% 35%, #e3d8f7 0%, transparent 70%),
+    #faf8f5;
+}
+.glow {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 520px;
+  z-index: 0;
+  filter: blur(60px);
+  opacity: 0.75;
+  pointer-events: none;
+  background:
+    radial-gradient(30% 50% at 20% 40%, #cfe3f5, transparent 70%),
+    radial-gradient(28% 45% at 50% 30%, #f7d4e2, transparent 70%),
+    radial-gradient(32% 55% at 78% 45%, #f7ea9c, transparent 70%);
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }

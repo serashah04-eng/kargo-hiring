@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Space_Grotesk, Space_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import Nav from "@/components/Nav";
 import "./globals.css";
 
-const grotesk = Space_Grotesk({ variable: "--font-grotesk", subsets: ["latin"], weight: ["400", "500", "700"] });
-const mono = Space_Mono({ variable: "--font-mono", subsets: ["latin"], weight: ["400", "700"] });
+const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const serif = Instrument_Serif({ variable: "--font-serif", subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Kargo Hiring",
@@ -13,20 +14,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${grotesk.variable} ${mono.variable} antialiased`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${serif.variable} antialiased`}>
       <body className="min-h-screen">
-        <header className="border-b-[3px] border-ink bg-ink text-cream">
-          <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="grid h-9 w-9 place-items-center border-2 border-cream text-lg font-black">K</span>
-              <span className="text-lg font-black uppercase tracking-tight">Kargo · Hiring</span>
-            </Link>
-            <span className="hidden text-xs font-bold uppercase tracking-widest sm:block">
-              The system recommends. Arjun decides.
-            </span>
-          </div>
-        </header>
-        <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">{children}</main>
+        <div className="mx-auto flex max-w-[1440px] gap-6 p-3 sm:p-5">
+          <Nav />
+          <main className="relative min-w-0 flex-1 overflow-hidden rounded-[28px] bg-surface-2/60 px-4 pb-28 pt-6 sm:px-8 sm:pt-8 md:pb-10">
+            <div className="glow" />
+            <div className="relative z-10">{children}</div>
+          </main>
+        </div>
       </body>
     </html>
   );
