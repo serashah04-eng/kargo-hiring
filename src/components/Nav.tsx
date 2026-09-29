@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FilePlus2, LayoutGrid } from "lucide-react";
+import { FilePlus2, LayoutGrid, LogOut } from "lucide-react";
 
 const ITEMS = [
   { href: "/", label: "Dashboard", icon: LayoutGrid },
@@ -19,8 +19,14 @@ export function Logo({ size = 36 }: { size?: number }) {
   );
 }
 
+async function signOut() {
+  await fetch("/api/login", { method: "DELETE" });
+  window.location.href = "/login";
+}
+
 export default function Nav() {
   const path = usePathname();
+  if (path === "/login") return null;
   const active = (href: string) => (href === "/" ? path === "/" || (path.startsWith("/candidates/") && path !== "/candidates/new") : path === href);
 
   return (
@@ -42,7 +48,10 @@ export default function Nav() {
             <Icon size={19} strokeWidth={1.7} />
           </Link>
         ))}
-        <div className="mt-auto grid h-9 w-9 place-items-center rounded-full bg-ink text-xs font-semibold text-white" title="Arjun Mehta">
+        <button onClick={signOut} title="Sign out" className="mt-auto grid h-10 w-10 place-items-center rounded-xl text-muted hover:bg-surface-2 hover:text-ink">
+          <LogOut size={18} strokeWidth={1.7} />
+        </button>
+        <div className="grid h-9 w-9 place-items-center rounded-full bg-ink text-xs font-semibold text-white" title="Arjun Mehta">
           AM
         </div>
       </nav>
