@@ -42,9 +42,10 @@ Sign-off: "Arjun Mehta\\nFounder, Kargo". Under 110 words. Subject: "Your applic
 
 export const emailDryRun = () => process.env.EMAIL_DRY_RUN === "true";
 
-/** Sends through Resend. Only ever called from the explicit "Send" action. */
+/** Sends via Gmail SMTP when SMTP_USER is set, otherwise Resend. Only ever called from the explicit "Send" action. */
 export async function sendEmail(to: string, subject: string, body: string): Promise<{ id: string }> {
   if (emailDryRun()) return { id: `dry-run-${Date.now()}` };
+  if (process.env.SMTP_USER) return sendViaSmtp(to, subject, body);
 
   const key = process.env.RESEND_API_KEY;
   if (!key) throw new Error("RESEND_API_KEY is not set — email service not configured.");
@@ -59,4 +60,34 @@ export async function sendEmail(to: string, subject: string, body: string): Prom
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(`Resend ${res.status}: ${data?.message || "send failed"}`);
   return { id: data.id };
+}
+
+async function sendViaSmtp(to: string, subject: string, body: string) {
+  const user = process.env.SMTP_USER!;
+  const pass = process.env.SMTP_PASS?.replace(/\s+/g, ""); // Gmail shows app passwords with spaces
+  if (!pass) throw new Error("SMTP_PASS is not set — add your Gmail App Password.");
+  const nodemailer = await import("nodemailer");
+  const transport = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || "smtp.gmail.com",
+    port: Number(process.env.SMTP_PORT || 465),
+    secure: Number(process.env.SMTP_PORT || 465) === 465,
+    auth: { user, pass },
+  });
+  try {
+    const info = await transport.sendMail({
+      // Gmail only sends as the signed-in address; the display name is configurable
+      from: { name: process.env.EMAIL_FROM_NAME || "Arjun Mehta, Kargo", address: user },
+      to,
+      subject,
+      text: body,
+      replyTo: process.env.EMAIL_REPLY_TO || undefined,
+    });
+    return { id: info.messageId };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (/535|Invalid login|Username and Password not accepted/i.test(msg)) {
+      throw new Error("Gmail rejected the login. Check SMTP_USER and that SMTP_PASS is a Gmail App Password (not your normal password).");
+    }
+    throw new Error(`Gmail send failed: ${msg}`);
+  }
 }
