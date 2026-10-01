@@ -24,7 +24,7 @@ async function signOut() {
   window.location.href = "/login";
 }
 
-export default function Nav() {
+export default function Nav({ authEnabled }: { authEnabled: boolean }) {
   const path = usePathname();
   if (path === "/login") return null;
   const active = (href: string) => (href === "/" ? path === "/" || (path.startsWith("/candidates/") && path !== "/candidates/new") : path === href);
@@ -48,10 +48,12 @@ export default function Nav() {
             <Icon size={19} strokeWidth={1.7} />
           </Link>
         ))}
+        {authEnabled && (
         <button onClick={signOut} title="Sign out" className="mt-auto grid h-10 w-10 place-items-center rounded-xl text-muted hover:bg-surface-2 hover:text-ink">
           <LogOut size={18} strokeWidth={1.7} />
         </button>
-        <div className="grid h-9 w-9 place-items-center rounded-full bg-ink text-xs font-semibold text-white" title="Arjun Mehta">
+        )}
+        <div className={`${authEnabled ? "" : "mt-auto "}grid h-9 w-9 place-items-center rounded-full bg-ink text-xs font-semibold text-white`} title="Arjun Mehta">
           AM
         </div>
       </nav>

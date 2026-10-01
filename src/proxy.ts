@@ -1,16 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, safeEqual, sessionToken } from "@/lib/session";
 
-// Password gate for the whole app (candidate data + email sending).
-// Required in production; skipped locally when APP_PASSWORD is unset.
+// Optional password gate for the whole app. Open to everyone when APP_PASSWORD is unset.
 export async function proxy(req: NextRequest) {
   const password = process.env.APP_PASSWORD;
+  const { pathname } = req.nextUrl;
   if (!password) {
-    if (process.env.NODE_ENV !== "production") return NextResponse.next();
-    return new NextResponse("APP_PASSWORD is not configured.", { status: 503 });
+    return pathname === "/login" ? NextResponse.redirect(new URL("/", req.url)) : NextResponse.next();
   }
 
-  const { pathname } = req.nextUrl;
   if (pathname === "/login" || pathname === "/api/login") return NextResponse.next();
 
   const cookie = req.cookies.get(SESSION_COOKIE)?.value ?? "";
